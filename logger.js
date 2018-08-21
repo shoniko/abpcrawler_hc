@@ -13,6 +13,9 @@ const filterHitsLog = winston.createLogger({
     ]
 });
 
+const setLogPath = (newLogPath) => logPath = newLogPath; 
+
 module.exports = {
-    filterHitsLog: filterHitsLog
+    filterHitsLog: filterHitsLog,
+    setLogPath: setLogPath
 };

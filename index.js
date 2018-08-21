@@ -7,6 +7,7 @@ const crawler = require("./crawler");
 const optionDefinitions = [
   { name: "abppath", alias: "p", type: String },
   { name: "urllist", alias: "u", type: String },
+  { name: "output", alias: "o", type: String },
   { name: "depth", alias: "d", type: String, defaultValue: 0 }
 ];
 
@@ -33,6 +34,11 @@ if (!options.abppath || !options.urllist)
           description: "A CSV list of URLs to crawl. URL to crawl is a second parameter. https://moz.com/top500/domains/csv is a good start"
         },
         {
+          name: "output -o",
+          typeLabel: "{underline directory}",
+          description: "Path to an output folder."
+        },
+        {
           name: "depth -d",
           typeLabel: "{underline integer}",
           description: "A crawl depth"
@@ -48,7 +54,7 @@ if (!options.abppath || !options.urllist)
 (async() => {
   // Launch the crawler
   const pathToExtension = options.abppath;
-  await crawler.launchCrawler(pathToExtension);
+  await crawler.launchCrawler(pathToExtension, options.output);
 
   // Add URLs to crawler's queue
   let parser = csv({

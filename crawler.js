@@ -4,8 +4,12 @@ const sleep = require("system-sleep")
 
 let crawler = null;
 
-async function launchCrawler(pathToExtension)
+async function launchCrawler(pathToExtension, output)
 {
+  if (output)
+  {
+      logger.setLogPath(output);
+  }
   // Start the cralwer and load ABP
   crawler = await HCCrawler.launch({
     headless: false,

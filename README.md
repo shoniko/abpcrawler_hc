@@ -23,7 +23,7 @@ Checkout the repository and then run:
 
 This will build a container image based on the `Dockerfile` and name it `abp-crawler`. To run a crawl, run:
 
-    docker run -v /path/to/input/csv/file.csv:/home/crawler/crawlurls.csv -it abp-crawler
+    docker run -v /path/to/input/csv/file.csv:/home/crawler/crawlurls.csv -v /path/to/output/folder:/home/crawlresult/ -it abp-crawler
 
 Log file structure
 ===
