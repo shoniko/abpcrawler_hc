@@ -1,0 +1,22 @@
+{
+  "name": "abpcrawler_hc",
+  "version": "0.0.1",
+  "description": "Crawl the web and log ads",
+  "main": "index.js",
+  "dependencies": {
+    "command-line-args": "^5.0.2",
+    "command-line-usage": "^5.0.5",
+    "csv-parse": "^2.5.0",
+    "headless-chrome-crawler": "github:yujiosaka/headless-chrome-crawler#greenkeeper/puppeteer-1.7.0",
+    "redis": "^2.8.0",
+    "system-sleep": "^1.3.6",
+    "winston": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js --abppath C:\\projects\\adblockpluschrome\\devenv.chrome --urllist c:\\Temp\\top500.domains.csv",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Oleksandr Paraska",
+  "license": "ISC"
+}
