@@ -15,6 +15,16 @@ When that is done, launch the crawl with
 
 This will run the crawl and store results into `filterhits.log` file in current directory.
 
+Running a Docker container
+===
+Checkout the repository and then run:
+
+    docker build -t abp-crawler .
+
+This will build a container image based on the `Dockerfile` and name it `abp-crawler`. To run a crawl, run:
+
+    docker run -v /path/to/input/csv/file.csv:/home/crawler/crawlurls.csv -it abp-crawler
+
 Log file structure
 ===
 

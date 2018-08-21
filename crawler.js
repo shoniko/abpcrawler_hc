@@ -10,7 +10,11 @@ async function launchCrawler(pathToExtension)
   crawler = await HCCrawler.launch({
     headless: false,
     args: ["--disable-extensions-except=" + pathToExtension,
-    "--load-extension=" + pathToExtension],
+    "--load-extension=" + pathToExtension,
+    // The two options below are needed to run crawl in a Docker container
+    "--no-sandbox",
+    "--disable-setuid-sandbox",
+    ],
     customCrawl: async (page, crawl) => {
         // We need to change the viewport of each page as it defaults to 800x600
         // see: https://github.com/GoogleChrome/puppeteer/issues/1183
@@ -87,6 +91,8 @@ async function launchCrawler(pathToExtension)
       ext.HitLogger.removeListener(tabid, filterHit);
     });
   });
+
+  crawler.addListener("requeststarted", (options) => console.log(options));
 }
 
 async function addToqueue(url, depth) {
