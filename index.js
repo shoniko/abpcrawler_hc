@@ -23,14 +23,19 @@ if (!options.abppath || !options.urllist)
       header: "Options",
       optionList: [
         {
-          name: "abppath",
+          name: "abppath -p",
           typeLabel: "{underline directory}",
           description: "Path to unpacked ABP for Chrome."
         },
         {
-          name: "urllist",
+          name: "urllist -u",
           typeLabel: "{underline file}",
           description: "A CSV list of URLs to crawl. URL to crawl is a second parameter. https://moz.com/top500/domains/csv is a good start"
+        },
+        {
+          name: "depth -d",
+          typeLabel: "{underline integer}",
+          description: "A crawl depth"
         }
       ]
     }
