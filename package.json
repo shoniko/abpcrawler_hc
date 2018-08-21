@@ -14,7 +14,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node index.js --abppath C:\\projects\\adblockpluschrome\\devenv.chrome --urllist c:\\Temp\\top500.domains.csv",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Oleksandr Paraska",
