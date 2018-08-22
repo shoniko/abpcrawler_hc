@@ -30,6 +30,7 @@ RUN yarn add headless-chrome-crawler
 WORKDIR /home
 RUN git clone https://github.com/adblockplus/adblockpluschrome.git
 WORKDIR /home/adblockpluschrome
+RUN echo "ext.HitLogger = HitLogger;" >> /home/adblockpluschrome/lib/hitLogger.js
 RUN pip install jinja2
 RUN python build.py devenv -t chrome
 
