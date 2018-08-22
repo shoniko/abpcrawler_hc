@@ -47,4 +47,4 @@ RUN wget -O crawlurls.csv https://moz.com/top500/domains/csv
 RUN apt-get update && apt-get install -y xvfb
 
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["xvfb-run", "--", "npm", "start", "--", "-p", "/home/adblockpluschrome/devenv.chrome", "-u", "/home/crawler/crawlurls.csv", "-o", "/home/crawlresult/"]
+CMD ["xvfb-run", "--", "npm", "start", "--", "-p", "/home/adblockpluschrome/devenv.chrome", "-o", "/home/crawlresult/"]
