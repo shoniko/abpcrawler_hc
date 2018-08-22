@@ -1,30 +1,55 @@
 const HCCrawler = require("headless-chrome-crawler");
 const logger = require("./logger");
 const sleep = require("system-sleep")
+const url = require('url');
+const path = require('path');
 
 let crawler = null;
 
-async function launchCrawler(pathToExtension, output)
-{
-  if (output)
-  {
-      logger.setLogPath(output);
+async function launchCrawler(options) {
+  if (options.output) {
+    logger.setLogPath(options.output);
   }
   // Start the cralwer and load ABP
   crawler = await HCCrawler.launch({
     headless: false,
-    args: ["--disable-extensions-except=" + pathToExtension,
-    "--load-extension=" + pathToExtension,
-    // The two options below are needed to run crawl in a Docker container
-    "--no-sandbox",
-    "--disable-setuid-sandbox",
+    args: ["--disable-extensions-except=" + options.abppath,
+    "--load-extension=" + options.abppath,
+      // The two options below are needed to run crawl in a Docker container
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
     ],
     customCrawl: async (page, crawl) => {
-        // We need to change the viewport of each page as it defaults to 800x600
-        // see: https://github.com/GoogleChrome/puppeteer/issues/1183
-        await page._client.send("Emulation.clearDeviceMetricsOverride");
-        const result = await crawl();
-        return result;
+      // We need to change the viewport of each page as it defaults to 800x600
+      // see: https://github.com/GoogleChrome/puppeteer/issues/1183
+      await page._client.send("Emulation.clearDeviceMetricsOverride");
+      const result = await crawl();
+      if (options.screenshots) {
+        try {
+          await page.waitFor(options.screenshotsDelay ? options.screenshotsDelay : 0);
+          let currentDate = new Date();
+          
+          let fileName = path.join(options.output, "/screenshots/",
+            url.parse(page.url()).hostname +
+            "_" + currentDate.getDate() + "-"
+            + (currentDate.getMonth() + 1) + "-"
+            + currentDate.getFullYear() + "_"
+            + currentDate.getHours() + "-"
+            + currentDate.getMinutes() + "-"
+            + currentDate.getSeconds() +
+            ".png");
+          await page.screenshot({
+            path: fileName,
+            fullPage: true
+          });
+        }
+        catch(e){
+          console.log(e);
+          throw e;
+        }
+      }
+
+      return result;
     }
   });
 
@@ -38,10 +63,9 @@ async function launchCrawler(pathToExtension, output)
     console.log("Title: " + target._targetInfo.title + " URL: " + target.url());
 
     if ((target.type() == "background_page") &&
-        (target._targetInfo.title == "Adblock Plus"))
-        {
-            return true;
-        }
+      (target._targetInfo.title == "Adblock Plus")) {
+      return true;
+    }
   });
   const backgroundPage = await backgroundPageTarget.page();
 
@@ -108,12 +132,12 @@ async function addToqueue(url, depth) {
 }
 
 async function waitForFinish() {
-    sleep(1000);
-    await crawler.onIdle();
+  sleep(1000);
+  await crawler.onIdle();
 }
 
 module.exports = {
-    launchCrawler: launchCrawler,
-    addToqueue: addToqueue,
-    waitForFinish: waitForFinish
+  launchCrawler: launchCrawler,
+  addToqueue: addToqueue,
+  waitForFinish: waitForFinish
 }
