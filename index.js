@@ -120,4 +120,6 @@ if (options.screenshots){
   fs.createReadStream(options.urllist).pipe(parser);
   
   await crawler.waitForFinish();
+  await crawler.close();
+  console.log("All done!");
 })();

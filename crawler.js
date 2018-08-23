@@ -137,8 +137,13 @@ async function waitForFinish() {
   await crawler.onIdle();
 }
 
+async function close() {
+  await crawler.close();
+}
+
 module.exports = {
   launchCrawler: launchCrawler,
   addToqueue: addToqueue,
-  waitForFinish: waitForFinish
+  waitForFinish: waitForFinish,
+  close: close
 }
