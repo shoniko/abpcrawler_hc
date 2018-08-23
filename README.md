@@ -28,11 +28,11 @@ There are two ways of providing parameters to a crawler. First - through the com
     // Crawling depth
     "depth": 0,
     // Output folder
-    "output": "/path/to/output/folder"
+    "output": "/path/to/output/folder",
     // enable taking screenshots
     "screenshots": true,
     // time to wait before making a screenshot
-    "screenshotsDelay": 5000,
+    "screenshotsDelay": 5000
 }
 
 ```
