@@ -15,7 +15,7 @@ async function launchCrawler(options) {
   // Start the cralwer and load ABP
   crawler = await HCCrawler.launch({
     headless: false,
-    userDataDir: "userdatadir",
+    userDataDir: options.userDataDir,
     args: ["--disable-extensions-except=" + options.abppath,
     "--load-extension=" + options.abppath,
       // The two options below are needed to run crawl in a Docker container

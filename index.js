@@ -12,8 +12,9 @@ const optionDefinitions = [
   { name: "screenshots", alias: "s", type: Boolean },
   { name: "screenshots-delay", alias: "y", type: Number },
   { name: "depth", alias: "d", type: Number},
-  { name: "postProcessing", alias: "c", type: Boolean },
-  { name: "settings", alias: "t", type: Boolean },
+  { name: "postProcessing", alias: "c", type: String },
+  { name: "settings", alias: "t", type: String },
+  { name: "userDataDir", alias: "e", type: String }
 ];
 
 const options = commandLineArgs(optionDefinitions);
@@ -43,6 +44,9 @@ try {
   }
   if (typeof options.postProcessing == "undefined") {
     options.postProcessing = settings.postProcessing;
+  }
+  if (typeof options.userDataDir == "undefined") {
+    options.userDataDir = settings.userDataDir;
   }
 }
 catch(e){
