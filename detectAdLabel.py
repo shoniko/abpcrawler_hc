@@ -15,7 +15,7 @@ def main():
     templatesArray = []
     listOfFiles = glob.glob("adlabels/*.png")
     for filePath in listOfFiles:
-        templatesArray.extend([cv2.imread(filePath)])
+        templatesArray.extend([cv2.imread(filePath, 0)])
 
     # Load target image
     inputParam = json.loads(sys.argv[1])
