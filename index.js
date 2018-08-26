@@ -12,6 +12,7 @@ const optionDefinitions = [
   { name: "screenshots", alias: "s", type: Boolean },
   { name: "screenshots-delay", alias: "y", type: Number },
   { name: "depth", alias: "d", type: Number},
+  { name: "postProcessing", alias: "c", type: Boolean },
   { name: "settings", alias: "t", type: Boolean },
 ];
 
@@ -79,7 +80,7 @@ if (!options.abppath || !options.urllist)
           description: "Enable taking a screenshot."
         },
         {
-          name: "screenshotsDelay -sd",
+          name: "screenshotsDelay -y",
           typeLabel: "{underline Number}",
           description: "Milliseconds to wait before making a screenshot."
         },
