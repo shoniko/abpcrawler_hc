@@ -11,13 +11,17 @@ const optionDefinitions = [
   { name: "output", alias: "o", type: String},
   { name: "screenshots", alias: "s", type: Boolean },
   { name: "screenshots-delay", alias: "y", type: Number },
-  { name: "depth", alias: "d", type: Number}
+  { name: "depth", alias: "d", type: Number},
+  { name: "settings", alias: "t", type: Boolean },
 ];
 
 const options = commandLineArgs(optionDefinitions);
 
 try {
-  let settings = JSON.parse(fs.readFileSync("settings/settings.json"));
+  let settingsPath = options.settings
+  if (typeof settingsPath == "undefined")
+    settingsPath = "settings/settings.json"
+  let settings = JSON.parse(fs.readFileSync(settingsPath));
   if (typeof options.urllist == "undefined") {
     options.urllist = settings.urllist;
   }
@@ -88,12 +92,17 @@ if (!options.abppath || !options.urllist)
           name: "postProcessing -c",
           typeLabel: "{underline String}",
           description: "A command to run on every page as a post processing step."
+        },
+        {
+          name: "settings -t",
+          typeLabel: "{underline String}",
+          description: "Path to settings file. Default `settings/settings.json`."
         }
       ]
     },
     {
       header: "Settings file",
-      content: "Alternatively settings can be set using settings/settings.json file. Command line parameters have higher priority."
+      content: "Alternatively settings can be set using file (by default in `settings/settings.json`). Command line parameters have higher priority."
     }
 
   ]
