@@ -22,6 +22,9 @@ async function launchCrawler(options) {
       "--no-sandbox",
       "--disable-setuid-sandbox",
     ],
+    onError: (error) => {
+      console.log(error);
+    },
     customCrawl: async (page, crawl) => {
       // We need to change the viewport of each page as it defaults to 800x600
       // see: https://github.com/GoogleChrome/puppeteer/issues/1183
@@ -153,7 +156,7 @@ async function launchCrawler(options) {
     });
   });
 
-  crawler.addListener("requeststarted", (options) => console.log(options));
+  crawler.addListener("requeststarted", (options) => console.log(options.url));
 }
 
 async function addToqueue(url, depth) {
@@ -161,6 +164,7 @@ async function addToqueue(url, depth) {
   await crawler.queue({
     url: url,
     maxDepth: depth,
+    obeyRobotsTxt: false
   });
 }
 
