@@ -36,6 +36,9 @@ try {
   if (typeof options.depth == "undefined") {
     options.depth = settings.depth;
   }
+  if (typeof options.postProcessing == "undefined") {
+    options.postProcessing = settings.postProcessing;
+  }
 }
 catch(e){
   console.log("Settings file not found. Proceding with command line arguments.");
@@ -80,6 +83,11 @@ if (!options.abppath || !options.urllist)
           name: "depth -d",
           typeLabel: "{underline integer}",
           description: "A crawl depth"
+        },
+        {
+          name: "postProcessing -c",
+          typeLabel: "{underline String}",
+          description: "A command to run on every page as a post processing step."
         }
       ]
     },

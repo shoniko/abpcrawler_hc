@@ -3,6 +3,8 @@ const logger = require("./logger");
 const sleep = require("system-sleep")
 const url = require('url');
 const path = require('path');
+const util = require('util');
+const exec = util.promisify(require("child_process").exec);
 
 let crawler = null;
 
@@ -43,8 +45,38 @@ async function launchCrawler(options) {
             path: fileName,
             fullPage: true
           });
+          result.screenshotPath = fileName;
         }
         catch(e){
+          console.log(e);
+          throw e;
+        }
+      }
+      if (options.postProcessing) {
+        try {
+          let postProcessingParam = {}
+          postProcessingParam.url = result.response.url;
+          postProcessingParam.screenshotPath = result.screenshotPath;
+
+          let args = options.postProcessing.args.concat(
+            [JSON.stringify(postProcessingParam).replace(/\"/g, "\\\"")]
+          );
+
+          let execLine = options.postProcessing.program;
+          args.forEach(element => {
+            execLine += " " + element;
+          });
+
+          const { stdout, stderr } = await exec(execLine);
+          const response = stdout.replace("\n", "");
+          if (response != "0")
+          {
+            console.log("Detected " + response + " ads on " + postProcessingParam.url);
+          }
+
+        }
+        catch(e) {
+          console.log("Post-processing error:");
           console.log(e);
           throw e;
         }
@@ -133,8 +165,11 @@ async function addToqueue(url, depth) {
 }
 
 async function waitForFinish() {
+  // Wait for first URLs to queue up
   sleep(1000);
   await crawler.onIdle();
+  // Let the postProcessing finish, if needed
+  sleep(2000);
 }
 
 async function close() {
