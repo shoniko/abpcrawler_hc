@@ -43,8 +43,6 @@ RUN python build.py devenv -t chrome
 RUN mkdir /home/crawler
 COPY *.js /home/crawler/
 COPY package.json /home/crawler/
-RUN mkdir /home/crawler/userdatadir
-COPY userdatadir /home/crawler/userdatadir
 WORKDIR /home/crawler
 RUN npm install
 
