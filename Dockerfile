@@ -42,6 +42,9 @@ RUN python build.py devenv -t chrome
 # Set up the crawler
 RUN mkdir /home/crawler
 COPY *.js /home/crawler/
+COPY *.py /home/crawler/
+RUN mkdir /home/crawler/adlabels
+COPY adlabels/*.png /home/crawler/adlabels/
 COPY package.json /home/crawler/
 WORKDIR /home/crawler
 RUN npm install
