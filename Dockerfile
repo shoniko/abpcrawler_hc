@@ -1,5 +1,6 @@
 # See https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#running-puppeteer-in-docker
 FROM node:8-slim
+MAINTAINER Oleksandr Paraska <oleksandr@adblockplus.org>
 
 # See https://crbug.com/795759
 RUN apt-get update && apt-get install -yq libgconf-2-4
@@ -22,6 +23,10 @@ RUN apt-get update && apt-get install -y wget --no-install-recommends \
 # It's a good idea to use dumb-init to help prevent zombie chrome processes.
 ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
 RUN chmod +x /usr/local/bin/dumb-init
+
+# Install OpenCV
+RUN pip install --upgrade pip
+RUN pip install opencv-python-headless
 
 # Install puppeteer so it's available in the container.
 RUN yarn add headless-chrome-crawler
