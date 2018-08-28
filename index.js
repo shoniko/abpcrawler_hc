@@ -14,7 +14,8 @@ const optionDefinitions = [
   { name: "depth", alias: "d", type: Number},
   { name: "postProcessing", alias: "c", type: String },
   { name: "settings", alias: "t", type: String },
-  { name: "userDataDir", alias: "e", type: String }
+  { name: "userDataDir", alias: "e", type: String },
+  { name: "concurrency", alias: "r", type: Number }
 ];
 
 const options = commandLineArgs(optionDefinitions);
@@ -47,6 +48,9 @@ try {
   }
   if (typeof options.userDataDir == "undefined") {
     options.userDataDir = settings.userDataDir;
+  }
+  if (typeof options.concurrency == "undefined") {
+    options.concurrency = settings.concurrency;
   }
 }
 catch(e){
@@ -102,7 +106,12 @@ if (!options.abppath || !options.urllist)
           name: "settings -t",
           typeLabel: "{underline String}",
           description: "Path to settings file. Default `settings/settings.json`."
-        }
+        },
+        {
+          name: "concurrency -r",
+          typeLabel: "{underline integer}",
+          description: "Maximum concurrency of requests. NOTE: if taking screenshots is enabled it is best to set concurrency to 1. See: https://github.com/GoogleChrome/puppeteer/issues/1479"
+        },
       ]
     },
     {

@@ -15,6 +15,7 @@ async function launchCrawler(options) {
   // Start the cralwer and load ABP
   crawler = await HCCrawler.launch({
     headless: false,
+    maxConcurrency: options.concurrency,
     userDataDir: options.userDataDir,
     args: ["--disable-extensions-except=" + options.abppath,
     "--load-extension=" + options.abppath,
@@ -70,13 +71,7 @@ async function launchCrawler(options) {
             execLine += " " + element;
           });
 
-          const { stdout, stderr } = await exec(execLine);
-          const response = stdout.replace("\n", "");
-          if (response != "0")
-          {
-            console.log("Detected " + response + " ads on " + postProcessingParam.url);
-          }
-
+          exec(execLine);
         }
         catch(e) {
           console.log("Post-processing error:");
@@ -103,6 +98,9 @@ async function launchCrawler(options) {
       return true;
     }
   });
+  if (typeof backgroundPageTarget == "undefined")
+    return false;
+
   const backgroundPage = await backgroundPageTarget.page();
 
   // Add an intermediary `filterHit` listener, which removes
