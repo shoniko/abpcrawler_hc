@@ -8,82 +8,65 @@ const exec = util.promisify(require("child_process").exec);
 
 let crawler = null;
 
-async function launchCrawler(options) {
-  if (options.output) {
-    logger.setLogPath(options.output);
-  }
-  // Start the cralwer and load ABP
-  crawler = await HCCrawler.launch({
-    headless: false,
-    maxConcurrency: options.concurrency,
-    userDataDir: options.userDataDir,
-    args: ["--disable-extensions-except=" + options.abppath,
-    "--load-extension=" + options.abppath,
-      // The two options below are needed to run crawl in a Docker container
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-    ],
-    onError: (error) => {
-      console.log(error);
-    },
-    customCrawl: async (page, crawl) => {
-      // We need to change the viewport of each page as it defaults to 800x600
-      // see: https://github.com/GoogleChrome/puppeteer/issues/1183
-      await page._client.send("Emulation.clearDeviceMetricsOverride");
-      const result = await crawl();
-      if (options.screenshots) {
-        try {
-          await page.waitFor(options.screenshotsDelay ? options.screenshotsDelay : 0);
-          let currentDate = new Date();
-          
-          let fileName = path.join(options.output, "/screenshots/",
-            url.parse(page.url()).hostname +
-            "_" + currentDate.getDate() + "-"
-            + (currentDate.getMonth() + 1) + "-"
-            + currentDate.getFullYear() + "_"
-            + currentDate.getHours() + "-"
-            + currentDate.getMinutes() + "-"
-            + currentDate.getSeconds() +
-            ".png");
-          await page.screenshot({
-            path: fileName,
-            fullPage: true
-          });
-          result.screenshotPath = fileName;
-        }
-        catch(e){
-          console.log(e);
-          throw e;
-        }
-      }
-      if (options.postProcessing) {
-        try {
-          let postProcessingParam = {}
-          postProcessingParam.url = result.response.url;
-          postProcessingParam.screenshotPath = result.screenshotPath;
-
-          let args = options.postProcessing.args.concat(
-            [JSON.stringify(postProcessingParam).replace(/\"/g, "\\\"")]
-          );
-
-          let execLine = options.postProcessing.program;
-          args.forEach(element => {
-            execLine += " " + element;
-          });
-
-          exec(execLine);
-        }
-        catch(e) {
-          console.log("Post-processing error:");
-          console.log(e);
-          throw e;
-        }
-      }
-
-      return result;
+async function crawlFunction(page, crawl) {
+  // We need to change the viewport of each page as it defaults to 800x600
+  // see: https://github.com/GoogleChrome/puppeteer/issues/1183
+  await page._client.send("Emulation.clearDeviceMetricsOverride");
+  const result = await crawl();
+  if (options.screenshots) {
+    try {
+      await page.waitFor(options.screenshotsDelay ? options.screenshotsDelay : 0);
+      let currentDate = new Date();
+      
+      let fileName = path.join(options.output, "/screenshots/",
+        url.parse(page.url()).hostname +
+        "_" + currentDate.getDate() + "-"
+        + (currentDate.getMonth() + 1) + "-"
+        + currentDate.getFullYear() + "_"
+        + currentDate.getHours() + "-"
+        + currentDate.getMinutes() + "-"
+        + currentDate.getSeconds() +
+        ".png");
+      await page.screenshot({
+        path: fileName,
+        fullPage: true
+      });
+      result.screenshotPath = fileName;
     }
-  });
+    catch(e){
+      console.log(e);
+      throw e;
+    }
+  }
+  if (options.postProcessing) {
+    try {
+      let postProcessingParam = {}
+      postProcessingParam.screenshotPath = result.screenshotPath;
 
+      let args = options.postProcessing.args.concat(
+        [JSON.stringify(postProcessingParam).replace(/\"/g, "\\\"")]
+      );
+
+      let execLine = options.postProcessing.program;
+      args.forEach(element => {
+        execLine += " " + element;
+      });
+
+      const { stdout, stderr } = await exec(execLine);
+      const response = stdout.replace("\n", "");
+      console.log("Detected " + response + " ads on " + result.response.url);
+    }
+    catch(e) {
+      console.log("Post-processing error:");
+      console.log(e);
+      throw e;
+    }
+  }
+
+  return result;
+}
+
+async function initABP() {
   // For whatever reason Puppeteer sometimes forgets to
   // list ABP background page as a target. This helps a little.
   sleep(1000);
@@ -153,7 +136,31 @@ async function launchCrawler(options) {
       ext.HitLogger.removeListener(tabid, filterHit);
     });
   });
+}
 
+async function launchCrawler(options) {
+  if (options.output) {
+    logger.setLogPath(options.output);
+  }
+  // Start the cralwer and load ABP
+  crawler = await HCCrawler.launch({
+    headless: false,
+    maxConcurrency: options.concurrency,
+    userDataDir: options.userDataDir,
+    args: ["--disable-extensions-except=" + options.abppath,
+    "--load-extension=" + options.abppath,
+      // The two options below are needed to run crawl in a Docker container
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+    ],
+    onError: (error) => {
+      console.log(error);
+    },
+    customCrawl: crawlFunction
+  });
+
+  initABP();
+  
   crawler.addListener("requeststarted", (options) => console.log(options.url));
 }
 
