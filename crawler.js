@@ -7,6 +7,7 @@ const util = require('util');
 const exec = util.promisify(require("child_process").exec);
 
 let crawler = null;
+let options = null;
 
 async function crawlFunction(page, crawl) {
   // We need to change the viewport of each page as it defaults to 800x600
@@ -138,7 +139,8 @@ async function initABP() {
   });
 }
 
-async function launchCrawler(options) {
+async function launchCrawler(newOptions) {
+  options = newOptions;
   if (options.output) {
     logger.setLogPath(options.output);
   }
