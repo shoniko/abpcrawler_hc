@@ -137,6 +137,20 @@ async function initABP() {
       ext.HitLogger.removeListener(tabid, filterHit);
     });
   });
+
+  // Update filter lists
+  let extensionUrl = url.resolve(
+    "chrome-extension://" + url.parse(backgroundPageTarget.url()).host + "/",
+    "desktop-options.html#advanced"
+  );
+  let optionsPage = await crawler._browser.newPage();
+  await optionsPage.goto(extensionUrl);
+  const updateButtonSelector = ".i18n_options_filterList_update";
+  await optionsPage.waitForSelector(updateButtonSelector);
+  await optionsPage.click(updateButtonSelector);
+  // TODO: figure out the `filter list update finished` event to wait for 
+  sleep(5000);
+  await optionsPage.close();
 }
 
 async function launchCrawler(newOptions) {
@@ -161,7 +175,7 @@ async function launchCrawler(newOptions) {
     customCrawl: crawlFunction
   });
 
-  initABP();
+  await initABP();
   
   crawler.addListener("requeststarted", (options) => console.log(options.url));
 }
