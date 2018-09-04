@@ -4,6 +4,7 @@ const csv = require("csv-parse");
 const fs = require("fs");
 const path = require("path");
 const crawler = require("./crawler");
+const singlePageCrawl = require("./singlepagecrawl");
 
 const optionDefinitions = [
   { name: "abppath", alias: "p", type: String},
@@ -15,7 +16,8 @@ const optionDefinitions = [
   { name: "postProcessing", alias: "c", type: String },
   { name: "settings", alias: "t", type: String },
   { name: "userDataDir", alias: "e", type: String },
-  { name: "concurrency", alias: "r", type: Number }
+  { name: "concurrency", alias: "r", type: Number },
+  { name: "single-page", alias: "i", type: String }
 ];
 
 const options = commandLineArgs(optionDefinitions);
@@ -51,6 +53,9 @@ try {
   }
   if (typeof options.concurrency == "undefined") {
     options.concurrency = settings.concurrency;
+  }
+  if (typeof options.singlePage == "undefined") {
+    options.singlePage = settings.singlePage;
   }
 }
 catch(e){
@@ -135,6 +140,11 @@ if (options.screenshots){
   }
 }
 (async() => {
+  if (typeof options.singlePage != "undefined") {
+    await singlePageCrawl.runOnURL(options);
+    console.log("All done!");
+    return;
+  }
   // Launch the crawler
   await crawler.launchCrawler(options);
 

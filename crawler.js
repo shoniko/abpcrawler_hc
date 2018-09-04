@@ -56,7 +56,7 @@ async function crawlFunction(page, crawl) {
 
       const { stdout, stderr } = await exec(execLine);
       const response = stdout.replace("\n", "");
-      console.log("Detected " + response + " ads on " + result.response.url);
+      console.log("Detected " + response + " ads on " + page.url());
     }
     catch(e) {
       console.log("Post-processing error:");
@@ -112,6 +112,10 @@ async function waitForFinish() {
   sleep(2000);
 }
 
+function setOptions(newOptions) {
+  options = newOptions;
+} 
+
 async function close() {
   await crawler.close();
 }
@@ -120,5 +124,7 @@ module.exports = {
   launchCrawler: launchCrawler,
   addToqueue: addToqueue,
   waitForFinish: waitForFinish,
-  close: close
+  close: close,
+  crawlFunction: crawlFunction,
+  setOptions: setOptions
 }
