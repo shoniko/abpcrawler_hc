@@ -57,6 +57,8 @@ RUN apt-get update && apt-get install -y xvfb
 
 RUN mkdir /home/crawlresult/
 RUN mkdir /home/crawlresult/screenshots
+RUN mkdir /home/serverresults
+RUN mkdir /home/serverresults/screenshots
 
 # Add user so we don't need --no-sandbox.
 RUN groupadd -r chromeuser && useradd -r -g chromeuser -G audio,video chromeuser \

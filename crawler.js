@@ -57,6 +57,7 @@ async function crawlFunction(page, crawl) {
       const { stdout, stderr } = await exec(execLine);
       const response = stdout.replace("\n", "");
       console.log("Detected " + response + " ads on " + page.url());
+      result.adsDetected = response;
     }
     catch(e) {
       console.log("Post-processing error:");
