@@ -6,7 +6,8 @@ $(document).ready(() => {
     // if the validator does not prevent form submit
     if (!e.isDefaultPrevented()) {
       e.preventDefault();
-      let url = "http://localhost:3001/";
+      // Redirect to same URL with a different port
+      let url = window.location.protocol + "//" + window.location.host + ":3001";
 
       let jsonObj = {};
       jsonObj["url"] = $("#url").val();
