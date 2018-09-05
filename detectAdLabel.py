@@ -35,10 +35,7 @@ def main():
             adsFound += 1
 
     if adsFound > 0:
-        pathSplit = os.path.split(inputParam["screenshotPath"])
-        newScreenshotName = "ad_" + pathSplit[1]
-        newScreenshotPath = os.path.join(pathSplit[0], newScreenshotName)
-        cv2.imwrite(newScreenshotPath, page_screenshot)
+        cv2.imwrite(inputParam["screenshotPath"], page_screenshot)
 
     print(adsFound)
 
