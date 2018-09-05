@@ -49,7 +49,7 @@ COPY adlabels/*.png /home/crawler/adlabels/
 COPY package.json /home/crawler/
 COPY frontend /home/crawler/frontend
 COPY api /home/crawler/api
-COPY userdatadir /home/crawler/userdatadir
+COPY server-userdatadir /home/crawler/userdatadir
 RUN mkdir /home/crawler/settings
 COPY settings/settings-server.json /home/crawler/settings/settings.json
 
@@ -63,8 +63,8 @@ RUN apt-get update && apt-get install -y xvfb
 
 RUN mkdir /home/crawlresult/
 RUN mkdir /home/crawlresult/screenshots
-RUN mkdir /home/serverresults
-RUN mkdir /home/serverresults/screenshots
+RUN mkdir /home/crawler/serverresults
+RUN mkdir /home/crawler/serverresults/screenshots
 
 # Add user so we don't need --no-sandbox.
 RUN groupadd -r chromeuser && useradd -r -g chromeuser -G audio,video chromeuser \
