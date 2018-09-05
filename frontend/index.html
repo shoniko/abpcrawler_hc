@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+  <title>ABP Crawler test page</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    .loader {
+      border: 16px solid #f3f3f3;
+      /* Light grey */
+      border-top: 16px solid #3498db;
+      /* Blue */
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+      display: none;
+    }
+
+    .result-text,
+    .result {
+      display: none;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <img src="Sentinel-Promo-Full-Page.png" class="w-100">
+      </div>
+      <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="loader"></div>
+        <div class="result-text"></div>
+        <form action="./" id="crawl-form">
+          <div class="form-group">
+            <input _ngcontent-c0="" class="form-control form-control-lg" placeholder="Test URL" type="URL" id="url" required="required"
+              data-error="URL is required.">
+          </div>
+          <div class="form-group">
+            <input class="form-control form-control-lg" placeholder="Screenshot delay" id="delay" type="number" min="0" value="10">
+          </div>
+          <div class="form-group">
+            <button class="btn btn-info btn-lg btn-block">Okay, go!</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="result container-fluid h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <img src="" />
+      </div>
+    </div>
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

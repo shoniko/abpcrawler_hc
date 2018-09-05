@@ -14,7 +14,7 @@ module.exports = async function (req, res, options) {
     throw "URL was undefined";
   }
   if (typeof req.body.delay != "undefined") {
-    options.delay = req.body.delay;
+    options.screenshotsDelay = req.body.delay;
   }
   options.singlePage = req.body.url;
 
