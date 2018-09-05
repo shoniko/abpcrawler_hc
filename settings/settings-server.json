@@ -1,0 +1,13 @@
+{
+    "screenshots": true,
+    "screenshotsDelay": 3000,
+    "postProcessing": {
+        "program": "python",
+        "args": [
+            "detectAdLabel.py"
+        ]},
+    "userDataDir": "userdatadir",
+    "concurrency": 1,
+    "depth": 1,
+    "abppath": "/home/adblockpluschrome/devenv.chrome"
+}

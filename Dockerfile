@@ -47,6 +47,12 @@ COPY *.py /home/crawler/
 RUN mkdir /home/crawler/adlabels
 COPY adlabels/*.png /home/crawler/adlabels/
 COPY package.json /home/crawler/
+COPY frontend /home/crawler/frontend
+COPY api /home/crawler/api
+COPY userdatadir /home/crawler/userdatadir
+RUN mkdir /home/crawler/settings
+COPY settings/settings-server.json /home/crawler/settings/settings.json
+
 WORKDIR /home/crawler
 RUN npm install
 
