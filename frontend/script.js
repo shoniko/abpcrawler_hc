@@ -7,7 +7,7 @@ $(document).ready(() => {
     if (!e.isDefaultPrevented()) {
       e.preventDefault();
       // Redirect to same URL with a different port
-      let url = window.location.protocol + "//" + window.location.host + ":3001";
+      let url = window.location.protocol + "//" + window.location.hostname + ":3001";
 
       let jsonObj = {};
       jsonObj["url"] = $("#url").val();
