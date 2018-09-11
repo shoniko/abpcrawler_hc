@@ -1,5 +1,7 @@
 const sleep = require("system-sleep")
 const url = require('url');
+const logger = require("./logger");
+
 
 async function initABP(browser) {
     // For whatever reason Puppeteer sometimes forgets to
